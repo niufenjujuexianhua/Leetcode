@@ -35,11 +35,12 @@ class Solution2(object):
             return False
             
         dict = {}
-        for i in range(len(nums)):
-            if (target - nums[i]) in dict:
-                return [dict[target-nums[i]], i]
+        for idx, value in enumerate(nums):
+#        for idx in range(len(nums)):
+            if (target - value) in dict:
+                return [dict[target-value], idx]
             else:
-                dict[nums[i]] = i
+                dict[nums[idx]] = idx
         
         
 
