@@ -1,10 +1,13 @@
-#==============================================================================
-# Brute Force
-# Issue log:
-#     1. need to add i != k. see comment below
-#     2. need to consider when len(nums) is less then 2
-#==============================================================================
+'''
+Brute Force
+    Issue log:
+        1. need to add i != k. see comment below
+        2. need to consider when len(nums) is less then 2
 
+using dictionary
+'''
+
+#Brute Force  time O(n^2)
 class Solution(object):
     def twoSum(self, nums, target):
         """
@@ -20,7 +23,26 @@ class Solution(object):
                 if nums[i] + nums[k] == target and i != k:
                     return [i, k]
 
+#using dictionary only one for loop  O(n)
+class Solution2(object):
+    def twoSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        if len(nums) <= 1:
+            return False
+            
+        dict = {}
+        for i in range(len(nums)):
+            if (target - nums[i]) in dict:
+                return [dict[target-nums[i]], i]
+            else:
+                dict[nums[i]] = i
+        
+        
 
 if __name__ == '__main__':
-    result = Solution().twoSum([1, 9, -1, 0, -2, 2], 7)
+    result = Solution2().twoSum([1, 9, -1, 0, -2, 2], 7)
     print(result)
