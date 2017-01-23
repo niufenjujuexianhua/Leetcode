@@ -7,6 +7,8 @@ issue log:
         need to change it to:
             if numRows == 1:
                 return s
+                
+        if possible, rewrite solution2. Many edge cases need to consider. for example, when numRows=2
 """
 
 class Solution(object):
@@ -30,8 +32,37 @@ class Solution(object):
         
         return ''.join(rows)
         
+class Solution2(object):
+    def convert(self, s, numRows):
+        """
+        :type s: str
+        :type numRows: int
+        :rtype: str
+        """     
+        rows = [''] * numRows
+
+        if numRows == 1:
+            return s
+            
+        index = -1
+        step = 1
         
+        for i in range(len(s)):
+            index += step
+            
+            if index == numRows:
+                index -= 2
+                step = -1
+            
+
+            elif index == -1:
+                index = 1
+                step = 1
+            rows[index] += s[i]
+
+        return ''.join(rows)
+                
 
 if __name__ == '__main__': 
-    result = Solution().convert("ab", 1)
+    result = Solution2().convert("abcdef", 3)
     print(result)
