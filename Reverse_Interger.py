@@ -33,9 +33,9 @@ class Solution2(object):
         :rtype: int
         """ 
         sign = -1 if x < 0 else 1
-        x = x*sign
-        r = sign*int(str(x)[::-1])
-        return r * (r < 2**31)
+        x = x * sign
+        r = int(str(x)[::-1])
+        return sign * r * (r < 0x7FFFFFFF)
 
         
         
