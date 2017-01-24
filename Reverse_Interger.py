@@ -25,9 +25,21 @@ class Solution(object):
             return 0
 
         return y*sign
+
+class Solution2(object):
+    def reverse(self, x):
+        """
+        :type x: int
+        :rtype: int
+        """ 
+        sign = -1 if x < 0 else 1
+        x = x*sign
+        r = sign*int(str(x)[::-1])
+        return r * (r < 2**31)
+
         
         
 if __name__ == '__main__':
-    result = Solution().reverse(-12340)
+    result = Solution().reverse(12340)
     print(result)
         
