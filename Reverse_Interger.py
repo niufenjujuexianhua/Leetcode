@@ -36,10 +36,18 @@ class Solution2(object):
         x = x * sign
         r = int(str(x)[::-1])
         return sign * r * (r < 0x7FFFFFFF)
-
+        
+        
+class Solution3(object):       
+    def reverse(self, x):
+        if x>=0:
+            res = int(str(x)[::-1])
+        else:
+            res = int('-' + str(x)[:0:-1])
+        return res
         
         
 if __name__ == '__main__':
-    result = Solution().reverse(12340)
+    result = Solution3().reverse(12340)
     print(result)
         
