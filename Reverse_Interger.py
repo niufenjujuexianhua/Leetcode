@@ -46,8 +46,21 @@ class Solution3(object):
             res = int('-' + str(x)[:0:-1])
         return res
         
+
+class Solution4(object):       
+    def reverse(self, x):
+        result = 0
+        pos_x = abs(x)
+        while pos_x:
+            result = result * 10 + pos_x % 10
+            pos_x //= 10
+        
+        if result > 0x7FFFFFFF:
+            return 0
+            
+        return result if x >= 0 else result * (-1)
         
 if __name__ == '__main__':
-    result = Solution3().reverse(12340)
+    result = Solution4().reverse(12340)
     print(result)
         
