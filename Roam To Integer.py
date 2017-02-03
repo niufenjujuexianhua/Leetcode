@@ -45,9 +45,23 @@ class Solution2(object):
                 num += dictionary[s[i]]
 
         return num + dictionary[s[-1]]
-        
+
+
+class Solution3(object):
+    def romanToInt(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        d = {'M':1000, 'D':500, 'C':100, 'L':50, 'X':10, 'V':5, 'I':1}
+
+        res, p = 0, 'I'
+        for c in s[::-1]:
+            res, p = res - d[c] if d[c] < d[p] else res + d[c], c
+        return res
+            
 if __name__ == '__main__':
-    result = Solution2().romanToInt('DCXIX')
+    result = Solution3().romanToInt('DCXIX')
     print(result)
     
     
