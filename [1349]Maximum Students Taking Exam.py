@@ -74,7 +74,7 @@ class Solution(object):
         for i in range(m):
             state = 0
             for j in range(n):
-                state |= (seats[i][j] == '#') << (n - j - 1)
+                state |= (seats[i][j] == '#') << j
             s.append(state)
 
         for i in range(1, m + 1):
