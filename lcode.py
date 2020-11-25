@@ -1,28 +1,23 @@
 class Solution:
     """
-    @param: root: The root of the BST.
-    @param: p: You need find the successor node of p.
-    @return: Successor of p.
+    @param pid: the process id
+    @param ppid: the parent process id
+    @param kill: a PID you want to kill
+    @return: a list of PIDs of processes that will be killed in the end
     """
 
-    def inorderSuccessor(self, root, p):
-        # write your code here
-        if not root:
-            return
+    def killProcess(self, pid, ppid, kill):
+        # Write your code here
+        graph = collections.defaultdict(set)
+        for par, kid in zip(ppid, pid):
+            graph[par].add(kid)
 
-        if p.right:
-            p = p.right
-            while p.left:
-                p = p.left
-            return p
+        res = []
+        self.dfs(graph, kill, res)
+        return res
 
-        succ = None
-        while root:
-            if root.val > p.val:
-                succ = root
-                root = root.left
-            elif root.val < p.val:
-                root = root.right
-            else:
-                break
-        return succ
+    def dfs(self, graph, node, res):
+        res.append(node)
+
+        for kid in graph[node]:
+            self.dfs(graph, kid, res)
