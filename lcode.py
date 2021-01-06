@@ -1,51 +1,45 @@
 class Solution:
     """
-    @param org: a permutation of the integers from 1 to n
-    @param seqs: a list of sequences
-    @return: true if it can be reconstructed only one or false
+    @param words: a list of words
+    @return: a string which is correct order
     """
 
-    def sequenceReconstruction(self, org, seqs):
-        # write your code here
-        # if not org: return not seqs or not seqs[0]
-        import collections, functools
-        if functools.reduce(set.union, seqs, set()) != set(org): return False
-        n = len(org)
-        indegree = [0] * (n + 1)
+    def alienOrder(self, words):
+        # Write your code here
+        import collections
+        chars = set(''.join(words))
+        indegree = collections.defaultdict(int)
         graph = collections.defaultdict(list)
 
-        for seq in seqs:
-            for a, b in zip(seq, seq[1:]):
-                indegree[b] += 1
-                graph[a].append(b)
+        for prev, succ in zip(words, words[1:]):
+            for i in range(len(prev)):
+                if i >= len(succ):
+                    return ''
+                if prev[i] != succ[i]:
+                    if prev[i] in graph[succ[i]]:
+                        return ''
+                    indegree[succ[i]] += 1
+                    graph[prev[i]].append(succ[i])
+                    break
 
-        dq = collections.deque([i for i in range(1, n + 1) if indegree[i] == 0])
-        ls = []
-        while dq:
-            if len(dq) > 1:
-                return False
-            v = dq.popleft()
-            ls.append(v)
-            for nxt in graph[v]:
+        hq = collections.deque([ch for ch in chars if indegree[ch] == 0])
+        res = ''
+        while hq:
+            node = hq.popleft()
+            res += node
+            for nxt in graph[node]:
                 indegree[nxt] -= 1
                 if indegree[nxt] == 0:
-                    dq.append(nxt)
-        return ls == org
+                    hq.append(nxt)
+        return res * (len(res) == len(chars))
 
-    #     return True if self.dfs(graph, head[0], set([]), n) == 1 else False
+    # def dfs(self, graph, node, seen):
+    #     if node in seen:
+    #         return ''
     #
-    # def dfs(self, graph, i, seen, n):
-    #     if i in seen:
-    #         return 0
-    #
-    #
-    #     if len(seen) == n:
-    #         return 1
-    #
-    #     seen.add(i)
-    #     cnt = 0
-    #     for nxt in graph[i]:
-    #         cnt += self.dfs(graph, nxt, seen, n)
-    #     return cnt + (len(seen) == n - 1 and i not in seen)
-print(Solution().sequenceReconstruction([4,1,5,2,6,3],
-[[5,2,6,3],[4,1,5,2]]))
+    #     seen.add(node)
+    #     for nxt in sorted(graph[node]):
+    #         node += self.dfs(graph, nxt, seen)
+    #     return node
+
+print(Solution().alienOrder(["zy","zx"]))
