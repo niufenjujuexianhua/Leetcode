@@ -1,45 +1,28 @@
-class Solution:
-    """
-    @param words: a list of words
-    @return: a string which is correct order
-    """
+# class Solution(object):
+class Solution(object):
+    def isBipartite(self, graph):
+        """
+        :type graph: List[List[int]]
+        :rtype: bool
+        """
+        n = len(graph)
+        colors = [-1] * n
 
-    def alienOrder(self, words):
-        # Write your code here
-        import collections
-        chars = set(''.join(words))
-        indegree = collections.defaultdict(int)
-        graph = collections.defaultdict(list)
+        for i in range(n):
+            if colors[i] == -1:
+                if not self.dfs(graph, i, colors, 1):
+                    return False
+        return True
 
-        for prev, succ in zip(words, words[1:]):
-            for i in range(len(prev)):
-                if i >= len(succ):
-                    return ''
-                if prev[i] != succ[i]:
-                    if prev[i] in graph[succ[i]]:
-                        return ''
-                    indegree[succ[i]] += 1
-                    graph[prev[i]].append(succ[i])
-                    break
+    def dfs(self, graph, i, colors, col):
+        colors[i] = col
+        for nxt in graph[i]:
+            if colors[nxt] == col:
+                return False
+            elif colors[nxt] == 1 - col:
+                continue
+            if not self.dfs(graph, nxt, colors, 1 - col):
+                return False
+        return True
 
-        hq = collections.deque([ch for ch in chars if indegree[ch] == 0])
-        res = ''
-        while hq:
-            node = hq.popleft()
-            res += node
-            for nxt in graph[node]:
-                indegree[nxt] -= 1
-                if indegree[nxt] == 0:
-                    hq.append(nxt)
-        return res * (len(res) == len(chars))
-
-    # def dfs(self, graph, node, seen):
-    #     if node in seen:
-    #         return ''
-    #
-    #     seen.add(node)
-    #     for nxt in sorted(graph[node]):
-    #         node += self.dfs(graph, nxt, seen)
-    #     return node
-
-print(Solution().alienOrder(["zy","zx"]))
+print(Solution().isBipartite([[1,3],[0,2],[1,3],[0,2]]))
