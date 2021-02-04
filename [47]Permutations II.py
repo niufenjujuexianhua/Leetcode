@@ -27,7 +27,7 @@
 #  -10 <= nums[i] <= 10 
 #  
 #  Related Topics Backtracking 
-#  👍 2576 👎 71
+#  👍 2703 👎 75
 
 
 # leetcode submit region begin(Prohibit modification and deletion)
@@ -37,23 +37,25 @@ class Solution(object):
         :type nums: List[int]
         :rtype: List[List[int]]
         """
-        nums.sort()
         res = []
-        self.bt(nums, [], res, set())
+        self.bt(sorted(nums), [0] * len(nums), [], res)
         return res
 
-    def bt(self, nums, path, res, seen):
+    def bt(self, nums, used, path, res):
         if len(path) == len(nums):
             res.append(path[:])
             return
 
-        last = float('inf')
-        for j in range(len(nums)):
-            # if j > 0 and nums[j] == nums[j - 1]: continue
-            if j in seen: continue
-            if nums[j] == last: continue
-            last = nums[j]
+        seen = set()
+        for i in range(len(nums)):
+            if used[i] or nums[i] in seen:
+                continue
+            used[i] = 1
+            seen.add(nums[i])
+            self.bt(nums, used, path + [nums[i]], res)
+            used[i] = 0
 
-            self.bt(nums, path + [nums[j]], res, seen.union(set([j])))
-# print(Solution().permuteUnique([1,2,2]))
+
+# print(Solution().permuteUnique([1,1,2]))
+        
 # leetcode submit region end(Prohibit modification and deletion)
