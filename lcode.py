@@ -1,28 +1,18 @@
-# class Solution(object):
-class Solution(object):
-    def isBipartite(self, graph):
-        """
-        :type graph: List[List[int]]
-        :rtype: bool
-        """
-        n = len(graph)
-        colors = [-1] * n
+class Solution:
+    """
+    @param word: the given word
+    @return: the generalized abbreviations of a word
+    """
+    def generateAbbreviations(self, word):
+        # Write your code here
+        res = []
+        self.bt(word, 0, 0, '', res)
+        return res
 
-        for i in range(n):
-            if colors[i] == -1:
-                if not self.dfs(graph, i, colors, 1):
-                    return False
-        return True
+    def bt(self, word, i, cnt, path, res):
+        if i == len(word):
+            res.append(path + ['', str(cnt)][cnt != 0])
+            return
 
-    def dfs(self, graph, i, colors, col):
-        colors[i] = col
-        for nxt in graph[i]:
-            if colors[nxt] == col:
-                return False
-            elif colors[nxt] == 1 - col:
-                continue
-            if not self.dfs(graph, nxt, colors, 1 - col):
-                return False
-        return True
-
-print(Solution().isBipartite([[1,3],[0,2],[1,3],[0,2]]))
+        self.bt(word, i + 1, cnt + 1, path, res)
+        self.bt(word, i + 1, 0, path + ['', str(cnt)][cnt != 0] + word[i], res)
