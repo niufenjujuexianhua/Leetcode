@@ -1,24 +1,36 @@
-# Given preorder and inorder traversal of a tree, construct the binary tree. 
-# 
-#  Note: 
-# You may assume that duplicates do not exist in the tree. 
-# 
-#  For example, given 
+# Given two integer arrays preorder and inorder where preorder is the preorder t
+# raversal of a binary tree and inorder is the inorder traversal of the same tree,
+#  construct and return the binary tree. 
 # 
 #  
-# preorder = [3,9,20,15,7]
-# inorder = [9,3,15,20,7] 
-# 
-#  Return the following binary tree: 
+#  Example 1: 
 # 
 #  
-#     3
-#    / \
-#   9  20
-#     /  \
-#    15   7 
+# Input: preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
+# Output: [3,9,20,null,null,15,7]
+#  
+# 
+#  Example 2: 
+# 
+#  
+# Input: preorder = [-1], inorder = [-1]
+# Output: [-1]
+#  
+# 
+#  
+#  Constraints: 
+# 
+#  
+#  1 <= preorder.length <= 3000 
+#  inorder.length == preorder.length 
+#  -3000 <= preorder[i], inorder[i] <= 3000 
+#  preorder and inorder consist of unique values. 
+#  Each value of inorder also appears in preorder. 
+#  preorder is guaranteed to be the preorder traversal of the tree. 
+#  inorder is guaranteed to be the inorder traversal of the tree. 
+#  
 #  Related Topics Array Tree Depth-first Search 
-#  👍 4085 👎 109
+#  👍 4971 👎 128
 
 
 # leetcode submit region begin(Prohibit modification and deletion)
@@ -30,30 +42,23 @@
 #         self.right = right
 class Solution(object):
     def buildTree(self, preorder, inorder):
-        if not preorder or not inorder:
-            return
-        indices = {k: v for v, k in enumerate(inorder)}
+        """
+        :type preorder: List[int]
+        :type inorder: List[int]
+        :rtype: TreeNode
+        """
+        return self.dfs(preorder, inorder, 0, len(preorder) - 1, 0, len(inorder) - 1)
 
-        return self.helper(preorder, 0, len(preorder) - 1,
-                            inorder, 0, len(inorder) - 1, indices)
-
-    def helper(self, preorder, plt, prt,
-                     inorder, ilt, irt, indices):
-        if plt > prt:
+    def dfs(self, preorder, inorder, sp, ep, si, ei):
+        if sp > ep:
             return None
-        if plt == prt:
-            return TreeNode(preorder[plt])
+        if sp == ep:
+            return TreeNode(preorder[sp])
 
-        root = TreeNode(preorder[plt])
-        idx = indices[preorder[plt]]
-        ltsize = idx - ilt
-
-        root.left = self.helper(preorder, plt + 1, plt + ltsize,
-                                inorder, ilt, idx - 1, indices)
-        root.right = self.helper(preorder, plt + ltsize + 1, prt,
-                                inorder, idx + 1, irt, indices)
+        root = TreeNode(preorder[sp])
+        idx = inorder.index(preorder[sp])
+        lsize, rsize = idx - si, ei - idx
+        root.left = self.dfs(preorder, inorder, sp + 1, sp + lsize, si, idx - 1)
+        root.right = self.dfs(preorder, inorder, sp + lsize + 1, ep, idx + 1, ei)
         return root
-
-
-
-        # leetcode submit region end(Prohibit modification and deletion)
+# leetcode submit region end(Prohibit modification and deletion)
