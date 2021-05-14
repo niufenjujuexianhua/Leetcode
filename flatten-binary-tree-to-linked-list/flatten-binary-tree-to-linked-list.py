@@ -7,16 +7,12 @@ class Solution(object):
         if not root:
             return
 
-        self.flatten(root.left)
-        self.flatten(root.right)
+        lt = self.flatten(root.left)
+        rt = self.flatten(root.right)
 
-        tmp = root.right
-        root.right = root.left
-        root.left = None
-
-        node = root
-        while node.right:
-            node = node.right
-        node.right = tmp
-        
-        return root
+        tmplt, tmprt = root.left, root.right
+        root.left = root.right = None
+        root.right = tmplt
+        while root.right:
+            root = root.right
+        root.right = tmprt 
