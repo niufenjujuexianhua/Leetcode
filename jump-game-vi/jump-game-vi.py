@@ -5,15 +5,17 @@ class Solution(object):
         :type k: int
         :rtype: int
         """
-        import collections
-        ln = len(nums)
-        bf = collections.deque([0])
-        for i in range(1, ln):
-            if bf and bf[0] + k < i:
-                bf.popleft()
-            cur = nums[bf[0]] + nums[i]
-            while bf and cur > nums[bf[-1]]:
-                bf.pop()
-            nums[i] = cur
-            bf.append(i)
-        return nums[bf[-1]]
+        import heapq
+        if len(nums) == 1:
+            return nums[0]
+
+        hq = [(-nums[0], 0)]
+        heapq.heapify(hq)
+        for i, n in enumerate(nums[1:], 1):
+            while hq and hq[0][1] + k < i:
+                heapq.heappop(hq)
+
+            if i == len(nums) - 1:
+                return n - hq[0][0]
+
+            heapq.heappush(hq, (hq[0][0] - n, i))
