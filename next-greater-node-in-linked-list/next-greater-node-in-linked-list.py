@@ -1,21 +1,16 @@
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
 class Solution(object):
     def nextLargerNodes(self, head):
-        """
-        :type head: ListNode
-        :rtype: List[int]
-        """
-        if not head:
-            return []
-        i, cur, st, dt = 0, head, [], collections.defaultdict(set)
-        while cur:
-            while st and st[-1][1] < cur.val:
-                dt[cur.val].add(st.pop()[0])
-            st.append((i, cur.val))
-            i += 1
-            cur = cur.next
-
-        res = [0] * i
-        for val, idx in dt.items():
-            for i in idx:
-                res[i] = val
+        res, stack = [], []
+        while head:
+            while stack and stack[-1][1] < head.val:
+                res[stack.pop()[0]] = head.val
+            stack.append([len(res), head.val])
+            res.append(0)
+            head = head.next
         return res
+        
