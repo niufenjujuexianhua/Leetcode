@@ -5,13 +5,15 @@ class Solution(object):
         :rtype: List[List[int]]
         """
         res = []
-        self.dfs(sorted(nums), 0, res, [])
+        self.bt(sorted(nums), 0, [], res)
         return res
-        
-    def dfs(self, nums, i, res, path):
-        res.append(path)
+    
+    def bt(self, nums, i, path, res):
+        res.append(path[:])
 
+        seen = set()
         for j in range(i, len(nums)):
-            if j > i and nums[j - 1] == nums[j]:
+            if nums[j] in seen:
                 continue
-            self.dfs(nums, j + 1, res, path + [nums[j]])
+            seen.add(nums[j])
+            self.bt(nums, j + 1, path + [nums[j]], res)
