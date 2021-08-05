@@ -4,27 +4,28 @@ class Solution(object):
         """
         :type w: List[int]
         """
-        prob = 1.0 / sum(w)
-        self.w = [0] * len(w)
-        for i, weight in enumerate(w):
-            if i == 0:
-                self.w[i] = prob * weight
-            else:
-                self.w[i] = prob * weight + self.w[i - 1]
-        
+        for i in range(1, len(w)):
+            w[i] += w[i - 1]
+        self.w = w
 
     def pickIndex(self):
         """
         :rtype: int
         """
-        p = random.random()
+        rand = random.randint(1, self.w[-1])
         s, e = 0, len(self.w) - 1
         while s + 1 < e:
             m = s + (e - s) // 2
-            if self.w[m] > p:
+            if self.w[m] > rand:
                 e = m
             else:
                 s = m
-        if self.w[s] >= p:
+        if self.w[s] >= rand:
             return s
         return e 
+        
+
+
+# Your Solution object will be instantiated and called as such:
+# obj = Solution(w)
+# param_1 = obj.pickIndex()
