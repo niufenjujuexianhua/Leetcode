@@ -4,17 +4,16 @@ class Solution(object):
         :type s: str
         :rtype: bool
         """
-        dt = {'(' : 0,
-              '{' : 0,
-              '[' : 0}
-        map = {')' : '(',
-               ']' : '[',
-               '}' : '{'}
-        st = []
-        for ch in s:
-            if st and ch in map and st[-1] == map[ch]:
-                    st.pop()
+        if not s:
+            return True
+        map = {')':'(', '}':'{', ']':'['}
+        stack = []
+        for c in s:
+            if c not in map:
+                stack.append(c)
+            elif c in map and stack and stack[-1] == map[c]:
+                stack.pop()
             else:
-                st.append(ch)
-
-        return not st
+                return False
+        return not stack
+            
