@@ -30,9 +30,8 @@ class Solution(object):
         """
         uf = UnionFind(n + 1)
 
-        for i in range(1, n + 1):
-            for j in range(i, n + 1, i):
-                if i > threshold:
+        for i in range(threshold + 1, n):
+            for j in range(i, n+1, i):
                     uf.union(j, i)
 
         return [uf.find(a) == uf.find(b) for a, b in queries]
