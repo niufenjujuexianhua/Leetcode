@@ -5,12 +5,13 @@ class Solution(object):
         :rtype: int
         """
         from collections import defaultdict
-        total = 0 
-        dp = [defaultdict(int) for _ in nums]
-        
-        for j in range(len(nums)):
+        n = len(nums)
+        dp = [defaultdict(int) for _ in range(n)]
+        total = 0
+
+        for j in range(1, n):
             for i in range(j):
-                diff = nums[j] - nums[i]
-                dp[j][diff] += dp[i][diff] + 1 
-                total += dp[i][diff]
+                d = nums[j] - nums[i]
+                dp[j][d] += dp[i][d] + 1
+                total += dp[i][d]
         return total
