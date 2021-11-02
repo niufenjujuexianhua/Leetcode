@@ -5,10 +5,9 @@ class Solution(object):
         :type val: int
         :rtype: int
         """
-        i = 0
+        i = -1
         for j, n in enumerate(nums):
             if n != val:
-                nums[i], nums[j] = nums[j], nums[i]
                 i += 1
-        return i 
-        
+                nums[i], nums[j] = nums[j], nums[i]
+        return i + 1 
