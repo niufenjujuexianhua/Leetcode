@@ -10,14 +10,16 @@ class Solution(object):
         :type root: TreeNode
         :rtype: List[int]
         """
-        res = []
-        self.dfs(root, res)
-        return res 
-        
-    def dfs(self, root, res):
-        if not root:
-            return 
-        
-        res.append(root.val)
-        self.dfs(root.left, res)
-        self.dfs(root.right, res)
+        node, st, res = root, [], []
+
+        while node or st:
+            if node:
+                res.append(node.val)
+                st.append(node)
+                # if node.left:
+                node = node.left
+            else:
+                tmp = st.pop()
+                node = tmp.right
+
+        return res
