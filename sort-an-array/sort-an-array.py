@@ -6,19 +6,26 @@ class Solution(object):
         """
         n = len(nums)
         if n <= 1:
-            return nums 
-        
+            return nums
+
         lt, rt = self.sortArray(nums[: n//2]), self.sortArray(nums[n//2 :])
-        
-        res = [] 
-        i = j = 0 
+
+        i = j = k = 0
         while i < len(lt) and j < len(rt):
             if lt[i] <= rt[j]:
-                res.append(lt[i])
-                i += 1 
+                nums[k] = lt[i]
+                i += 1
             else:
-                res.append(rt[j])
+                nums[k] = rt[j]
                 j += 1
-        res.extend(lt[i:])
-        res.extend(rt[j:])
-        return res 
+            k += 1
+
+        while i < len(lt):
+            nums[k] = lt[i]
+            i += 1
+            k += 1 
+        while j < len(rt):
+            nums[k] = rt[j]
+            j += 1
+            k += 1
+        return nums 
