@@ -4,16 +4,19 @@ class Solution(object):
         :type nums: List[int]
         :rtype: int
         """
-        n = len(nums)
-        s, e = 0, n - 1
+        s, e = 0, len(nums) - 1
 
-        while s + 1 < e:
+        while s <= e:
+            if s == e:
+                return s 
+            if s + 1 == e:
+                return s if nums[s] > nums[e] else e
+            
             m = s + (e - s) // 2
-            if nums[m] > nums[m + 1]:
-                e = m
+            if nums[m - 1] <= nums[m] and nums[m] >= nums[m + 1]:
+                return m 
+            elif nums[m] <= nums[m + 1]:
+                s = m + 1
             else:
-                s = m
-
-        if nums[s] > nums[e]:
-            return s
-        return e
+                e = m - 1
+        return -1
