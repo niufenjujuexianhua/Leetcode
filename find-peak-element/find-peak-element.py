@@ -9,4 +9,4 @@ class Solution(object):
                 r = mid - 1
             elif mid+1<len(nums) or nums[mid]<nums[mid+1]:
                 l = mid + 1
-        return l
+        return r
