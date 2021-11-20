@@ -4,14 +4,12 @@ class Solution(object):
         :type root: Node
         :rtype: List[int]
         """
+        stack = [root]
         res = [] 
-        self.dfs(root, res)
+        while stack:
+            node = stack.pop()
+            if node:
+                res.append(node.val)
+
+                stack.extend(node.children[::-1])
         return res 
-    
-    def dfs(self, node, res):
-        if not node:
-            return 
-        
-        res.append(node.val)
-        for kid in node.children:
-            self.dfs(kid, res)
