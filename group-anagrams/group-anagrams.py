@@ -5,8 +5,7 @@ class Solution(object):
         :rtype: List[List[str]]
         """
         dt = collections.defaultdict(list)
-        
-        for word in strs:
-            key = tuple(sorted(word))
-            dt[key].append(word)
-        return dt.values()
+        for s in strs:
+            key = ''.join(sorted(s))
+            dt[key].append(s)
+        return list(dt.values())
