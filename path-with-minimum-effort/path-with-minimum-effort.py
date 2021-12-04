@@ -7,37 +7,25 @@ class Solution(object):
         mn, mx = float('inf'), float('-inf')
         m, n = len(heights), len(heights[0])
 
-        for i in range(m):
-            for j in range(n):
-                mn = min(mn, heights[i][j])
-                mx = max(mx, heights[i][j])
+        seen = [[float('inf')] * n for _ in range(m)]
+        hq = [[0, 0, 0]]
 
-        s, e = 0, mx - mn
-        while s < e:
-            mid = s + (e - s) // 2
-            if not self.valid(heights, mid):
-                s = mid + 1
-            else:
-                e = mid
-        return s
+        while hq:
+            cost, i, j = heapq.heappop(hq)
+            if cost > seen[i][j]:
+                continue
+            if i == m - 1 and j == n - 1:
+                return cost
 
-    def valid(self, heights, mid):
-        import collections
-        m, n = len(heights), len(heights[0])
-        bf = collections.deque([(0, 0)])
-        seen = set([(0, 0)])
-
-        while bf:
-            i, j = bf.popleft()
-
-            if (i, j) == (m - 1, n - 1):
-                return True
+            # seen[i][j] = min(seen[i][j], cost)
 
             for di, dj in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
                 ni, nj = i + di, j + dj
                 if 0 <= ni < m and 0 <= nj < n:
-                    if (ni, nj) not in seen and abs(heights[i][j] - heights[ni][nj]) <= mid:
-                        bf.append((ni, nj))
-                        seen.add((ni, nj))
-
-        return False
+                    nd = max(cost, abs(heights[ni][nj] - heights[i][j]))
+                    if nd < seen[ni][nj]:
+                    # if seen[ni][nj] == float('inf'):
+                    #     bf.append((ni, nj))
+                    #     seen.add((ni, nj))
+                        seen[ni][nj] = nd 
+                        heapq.heappush(hq, (nd, ni, nj))
