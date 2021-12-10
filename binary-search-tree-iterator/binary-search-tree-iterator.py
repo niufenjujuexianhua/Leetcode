@@ -5,35 +5,24 @@ class BSTIterator(object):
         :type root: TreeNode
         """
         self.st = []
-        node = root 
-        # self.node = root
-
-        # while self.st or self.node:
-        while node:
-            self.st.append(node)
-            node = node.left
-            # else:
-            #     cur = self.st.pop()
-            #     print(cur.val)
-            #     self.node = cur.right
-        
+        self.add(root)
 
     def next(self):
         """
         :rtype: int
         """
-        if self.st:
-            cur = self.st.pop()
-            node = cur.right 
-            while node:
-                self.st.append(node)
-                node = node.left 
-            return cur.val 
-        
-        
+        node = self.st.pop()
+        self.add(node.right)
+        return node.val
 
     def hasNext(self):
         """
         :rtype: bool
         """
-        return self.st != [] 
+        return len(self.st) != 0
+
+
+    def add(self, node):
+        while node:
+            self.st.append(node)
+            node = node.left
