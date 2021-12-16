@@ -4,19 +4,15 @@ class Solution(object):
         :type rooms: List[List[int]]
         :rtype: bool
         """
-        seen = set([0])
-        bf = set([0])
-        
-        while bf:
-            nxt = set()
-            for room in bf:
-                for key in rooms[room]:
-                    if key not in seen:
-                        seen.add(key)
-                        nxt.add(key)
-                        
-                        if len(seen) == len(rooms):
-                            return True
-            
-            bf = nxt 
-        return False
+        seen = [0] * len(rooms)
+
+        self.dfs(rooms, seen, 0)
+        return all(seen)
+
+
+    def dfs(self, rooms, seen, i):
+        seen[i] = 1
+
+        for nxt in rooms[i]:
+            if seen[nxt] == 0:
+                self.dfs(rooms, seen, nxt)
