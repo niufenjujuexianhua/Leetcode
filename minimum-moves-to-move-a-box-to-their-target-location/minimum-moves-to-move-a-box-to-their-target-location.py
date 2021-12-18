@@ -6,11 +6,11 @@ class Solution(object):
         """
         import heapq
         m, n = len(grid), len(grid[0])
-        free = set()
+        # free = set()
         for i in range(m):
             for j in range(n):
-                if grid[i][j] != '#':
-                    free.add((i, j))
+                # if grid[i][j] != '#':
+                #     free.add((i, j))
                 if grid[i][j] == 'B':
                     box = (i, j)
                 if grid[i][j] == 'T':
@@ -39,9 +39,12 @@ class Solution(object):
                 #         heapq.heappush(hq, (step + 1, np, nb))
                 #     elif np != b:
                 #         heapq.heappush(hq, (step, np, b))
-                if np == b and nb in free:
+                if np == b and self.valid(grid, np, m, n):
                     heapq.heappush(hq, (step + 1, np, nb))
-                elif np in free and np != b:
+                elif self.valid(grid, np, m, n) and np != b:
                     heapq.heappush(hq, (step, np, b))
 
         return -1
+
+    def valid(self, grid, loc, m, n):
+        return 0 <= loc[0] < m and 0 <= loc[1] < n and grid[loc[0]][loc[1]] != '#'
