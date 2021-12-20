@@ -6,24 +6,28 @@ class Solution(object):
         :type k: int
         :rtype: int
         """
+        import collections
+        import heapq
         g = collections.defaultdict(dict)
 
-        for u, v, t in times:
-            g[u][v] = t
+        for s, e, t in times:
+            g[s][e] = t
 
-        seen = [0] + [-1] * n
+        seen = {}
         # seen[k] = 0
         hq = [(0, k)]
 
         while hq:
             time, node = heapq.heappop(hq)
-            if seen[node] != -1:
-                continue 
+            if node in seen:
+                continue
+
             seen[node] = time
 
             for nxt in g[node]:
-                if seen[nxt] == -1:
+                if nxt not in seen:
                     heapq.heappush(hq, (time + g[node][nxt], nxt))
-        if -1 in seen:
+
+        if len(seen) < n:
             return -1
-        return max(seen)
+        return max(seen.values())
