@@ -8,8 +8,9 @@ class Solution(object):
     def dfs(self, nums, used, path, ret, n):
         if len(path) == n:
             ret.append(path)
+            return 
         for i in range(len(nums)):
-            if used[i] or (i > 0 and nums[i] == nums[i - 1] and not used[i - 1]):
+            if used[i] or (i > 0 and nums[i] == nums[i - 1] and used[i - 1]):
                 continue  # skip duplicates
             if path and not self.square(path[-1] + nums[i]):
                 continue  # backtracking without going further
