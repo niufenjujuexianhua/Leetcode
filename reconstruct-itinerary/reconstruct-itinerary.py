@@ -6,29 +6,28 @@ class Solution(object):
         """
         import collections
         g = collections.defaultdict(list)
+        n = len(tickets)
+
         for s, e in tickets:
             g[s].append(e)
 
         for s in g:
-            g[s] = collections.deque(sorted(g[s], reverse = True))
+            g[s] = collections.deque(sorted(g[s]))
 
         res = []
-        self.dfs(g, 'JFK', ['JFK'], res, len(tickets) + 1)
+        self.dfs(g, 'JFK', ['JFK'], res, n)
         return res[0]
 
     def dfs(self, g, s, path, res, n):
-        if len(path) == n:
+        if res:
+            return
+        if len(path) == n + 1:
             res.append(path)
-            return True
-        if s not in g or not g[s]:
-            return False
-        
+            return
+
+
         sz = len(g[s])
         for _ in range(sz):
-            nxt = g[s].pop()
-            if self.dfs(g, nxt, path + [nxt], res, n):
-                return True
-            g[s].appendleft(nxt)
-        return False
-
-# print(Solution().findItinerary([["MUC","LHR"],["JFK","MUC"],["SFO","SJC"],["LHR","SFO"]]))
+            nxt = g[s].popleft()
+            self.dfs(g, nxt, path + [nxt], res, n)
+            g[s].append(nxt)
