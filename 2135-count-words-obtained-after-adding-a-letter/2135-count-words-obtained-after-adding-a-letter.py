@@ -8,20 +8,18 @@ class Solution(object):
         ab
         ij
         """
-        import collections
-        startWords = set([''.join(sorted(w)) for w in startWords])
-        res = 0
-
-        for w in targetWords:
-            w = ''.join(sorted(w))
-            i = j = 0
-            while j < len(w):
-                while j < len(w) and w[i] == w[j]:
-                    j += 1
-                if j - i == 1:
-                    if w[:i] + w[i + 1:] in startWords:
-                        res += 1
-                        break
-                i = j
-
-        return res
+        seen = set()
+        for word in startWords: 
+            m = 0
+            for ch in word: m |= 1 << ord(ch)-97
+            seen.add(m)
+            
+        ans = 0 
+        for word in targetWords: 
+            m = 0 
+            for ch in word: m |= 1 << ord(ch) - 97
+            for ch in word: 
+                if m ^ (1 << ord(ch)-97) in seen: 
+                    ans += 1
+                    break 
+        return ans 
