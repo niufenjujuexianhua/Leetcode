@@ -1,39 +1,44 @@
 class Solution(object):
     def solveSudoku(self, board):
-        rows, cols, triples, visit = collections.defaultdict(set), collections.defaultdict(
-            set), collections.defaultdict(set), collections.deque([])
-        for r in range(9):
-            for c in range(9):
-                if board[r][c] != ".":
-                    rows[r].add(board[r][c])
-                    cols[c].add(board[r][c])
-                    triples[(r // 3, c // 3)].add(board[r][c])
+        """
+        :type board: List[List[str]]
+        :rtype: None Do not return anything, modify board in-place instead.
+        """
+        rows = collections.defaultdict(set)
+        cols = collections.defaultdict(set)
+        subgrids = collections.defaultdict(set)
+        cells = []
+
+        for i in range(9):
+            for j in range(9):
+                val = board[i][j]
+                if val == '.':
+                    cells.append((i, j))
                 else:
-                    visit.append((r, c))
+                    rows[i].add(val)
+                    cols[j].add(val)
+                    subgrids[(i // 3, j // 3)].add(val)
 
-        def dfs():
-            if not visit:
-                return True
-            r, c = visit[0]
-            t = (r // 3, c // 3)
-            for dig in {"1", "2", "3", "4", "5", "6", "7", "8", "9"}:
-                if dig not in rows[r] and dig not in cols[c] and dig not in triples[t]:
-                    board[r][c] = dig
-                    rows[r].add(dig)
-                    cols[c].add(dig)
-                    triples[t].add(dig)
-                    visit.popleft()
-                    if dfs():
-                        return True
-                    else:
-                        board[r][c] = "."
-                        rows[r].discard(dig)
-                        cols[c].discard(dig)
-                        triples[t].discard(dig)
-                        visit.appendleft((r, c))
-            return False
+        self.dfs(board, cells, rows, cols, subgrids)
+        return board
 
-        dfs()
+    def dfs(self, board, cells, rows, cols, subgrids):
+        if not cells:
+            return True
 
-
-        
+        i, j = cells.pop()
+        for dig in map(str, range(1, 10)):
+            if dig not in rows[i] and dig not in cols[j] and dig not in subgrids[(i // 3, j // 3)]:
+                rows[i].add(dig)
+                cols[j].add(dig)
+                subgrids[(i // 3, j // 3)].add(dig)
+                board[i][j] = dig
+                # cells.pop()
+                if self.dfs(board, cells, rows, cols, subgrids):
+                    return True
+                rows[i].remove(dig)
+                cols[j].remove(dig)
+                subgrids[(i // 3, j // 3)].remove(dig)
+                board[i][j] = '.'
+        cells.append((i, j))
+        return False
