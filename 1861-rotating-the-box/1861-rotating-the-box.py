@@ -8,13 +8,12 @@ class Solution(object):
 
         for i in range(m):
             j = n - 1
-            while j >= 0 and box[i][j] != '.':
-                j -= 1
+            # while j >= 0 and box[i][j] != '.':
+            #     j -= 1
             idx = j
             while j >= 0:
                 if box[i][j] == '#':
                     box[i][idx], box[i][j] = box[i][j], box[i][idx]
-                    # box[i][j] = '.'
                     idx -= 1
                 elif box[i][j] == '*':
                     idx = j - 1
