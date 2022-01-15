@@ -8,8 +8,6 @@ class Solution(object):
 
         for i in range(m):
             j = n - 1
-            # while j >= 0 and box[i][j] != '.':
-            #     j -= 1
             idx = j
             while j >= 0:
                 if box[i][j] == '#':
@@ -19,5 +17,5 @@ class Solution(object):
                     idx = j - 1
                 j -= 1
 
-        nbox = list(zip(*box))
-        return [list(reversed(row)) for row in nbox]
+        # nbox = list(zip(*box))
+        return list(zip(*box[::-1]))
