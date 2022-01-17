@@ -38,3 +38,4 @@ class Solution(object):
                     self.dfs(board, ni, nj)
         else:
             board[i][j] = str(cnt)
+            return 
