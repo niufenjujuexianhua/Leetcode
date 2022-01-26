@@ -4,21 +4,17 @@ class Solution(object):
         :type firstList: List[List[int]]
         :type secondList: List[List[int]]
         :rtype: List[List[int]]
-             s1    e2
-        s2     e2
         """
-        if not firstList or not secondList:
-            return []
         i = j = 0
         res = []
         while i < len(firstList) and j < len(secondList):
-            s1, e1 = firstList[i]
-            s2, e2 = secondList[j]
+            lo = max(firstList[i][0], secondList[j][0])
+            hi = min(firstList[i][1], secondList[j][1])
 
-            if s1 <= s2 <= e1 or s2 <= s1 <= e2:
-                res.append([max(s1, s2), min(e1, e2)])
+            if lo <= hi:
+                res.append([lo, hi])
 
-            if e1 < e2:
+            if firstList[i][1] < secondList[j][1]:
                 i += 1
             else:
                 j += 1
