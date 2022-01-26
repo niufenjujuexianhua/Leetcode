@@ -8,7 +8,7 @@ class Solution(object):
         dt = {v : i for i, v in enumerate(order)}
 
         for a, b in zip(words, words[1:]):
-            if a.startswith(b) and len(a) > len(b):
+            if len(a) > len(b) and a.startswith(b):
                 return False
 
             for ca, cb in zip(a, b):
