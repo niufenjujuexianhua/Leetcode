@@ -7,13 +7,15 @@ class Solution(object):
         """
         dt = {v : i for i, v in enumerate(order)}
 
-        for a, b in zip(words, words[1:]):
-            if len(a) > len(b) and a.startswith(b):
-                return False
-
-            for ca, cb in zip(a, b):
-                if ca != cb:
-                    if dt[ca] > dt[cb]:
+        for word1, word2 in zip(words, words[1:]):
+            m, n = len(word1), len(word2)
+            for i in range(min(m, n)):
+                if word1[i] != word2[i]:
+                    if dt[word2[i]] < dt[word1[i]]:
                         return False
                     break
+                    
+                if i + 1 == min(m, n):
+                    if m > n:
+                        return False
         return True
