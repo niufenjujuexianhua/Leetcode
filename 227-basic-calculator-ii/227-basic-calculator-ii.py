@@ -4,31 +4,26 @@ class Solution(object):
         :type s: str
         :rtype: int
         """
-        if not s:
-            return
-        n, prevSign, stack = 0, '+', []
-        for i in range(len(s)):
-            if s[i].isdigit():
-                n = n * 10 + int(s[i])
-            if s[i] in '+-*/' or i == len(s) - 1:
-                if prevSign == '+':
-                    stack.append(n)
-                elif prevSign == '-':
-                    stack.append(-n)
-                elif prevSign == '*':
-                    stack.append(stack.pop() * n)
-                else:
-                    last = stack.pop()
-                    # if last < 0:
-                    #     stack.append(-(-last // n))
-                    # else:
-                    #     stack.append(last // n)
-                    stack.append(int(last / float(n)))
-                n = 0
-                prevSign = s[i]
+        curn = 0
+        prevop = '+'
+        st = []
 
-        return sum(stack)
-# print(Solution().calculate(" 3/2 "))
-
-
-        
+        for i, ch in enumerate(s):
+            # if ch == ' ':
+            #     continue
+            if ch.isdigit():
+                curn = curn * 10 + int(ch)
+            if (not s[i].isdigit() and not s[i].isspace()) or i == len(s)-1:
+                if prevop == '-':
+                    st.append(curn * -1)
+                elif prevop == '+':
+                    st.append(curn)
+                elif prevop == '*':
+                    pren = st.pop()
+                    st.append(pren * curn)
+                elif prevop == '/':
+                    pren = st.pop()
+                    st.append(int(pren / float(curn)))
+                curn = 0
+                prevop = ch
+        return sum(st)
