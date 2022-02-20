@@ -1,16 +1,23 @@
 class Solution(object):
-    def findCheapestPrice(self, n, flights, src, dst, K):
-        visited = {}
-        graph = collections.defaultdict(list)
-        for s, d, p in flights:
-            graph[s].append((d, p))
-        heap = [(0, 0, src)]
+    def findCheapestPrice(self, n, flights, src, dst, k):
+        neis = collections.defaultdict(list)
+        for f, t, p in flights:
+            neis[f].append((t, p))
+            
+        heap = [(0, k, src)]
+        seen_stops = collections.defaultdict(int)
+
         while heap:
-            dist, moves, node = heapq.heappop(heap)
-            if node == dst and K >= moves - 1:
-                return dist
-            if node not in visited or visited[node] > moves:
-                visited[node] = moves
-                for nei, weight in graph[node]:
-                    heapq.heappush(heap, (dist + weight, moves + 1, nei))
+            totalP, stops, city = heapq.heappop(heap)
+            if city == dst:
+                return totalP
+            if stops < 0:
+                continue
+            if city in seen_stops and seen_stops[city] >= stops:
+                continue
+            seen_stops[city] = stops
+            
+            for nei, neiP in neis[city]:
+                heapq.heappush(heap, (totalP + neiP, stops - 1, nei))
+        
         return -1
