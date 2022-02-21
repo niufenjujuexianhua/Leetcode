@@ -4,26 +4,24 @@ class Solution(object):
         :type s: str
         :rtype: int
         """
-        curn = 0
-        prevop = '+'
         st = []
-
+        n = 0
+        op = '+'
         for i, ch in enumerate(s):
             # if ch == ' ':
             #     continue
+
             if ch.isdigit():
-                curn = curn * 10 + int(ch)
-            if (not s[i].isdigit() and not s[i].isspace()) or i == len(s)-1:
-                if prevop == '-':
-                    st.append(curn * -1)
-                elif prevop == '+':
-                    st.append(curn)
-                elif prevop == '*':
-                    pren = st.pop()
-                    st.append(pren * curn)
-                elif prevop == '/':
-                    pren = st.pop()
-                    st.append(int(pren / float(curn)))
-                curn = 0
-                prevop = ch
+                n = n * 10 + int(ch)
+            if i == len(s) - 1 or ch in '+-*/':
+                if op == '+':
+                    st.append(n)
+                elif op == '-':
+                    st.append(-n)
+                elif op == '*':
+                    st.append(st.pop() * n)
+                else:
+                    st.append(int(st.pop() / float(n)))
+                op = ch
+                n = 0
         return sum(st)
