@@ -48,14 +48,16 @@ class LRUCache(object):
             self.cnt -= 1
 
         self.cnt += 1
+        node = Node(key, value)
+        self.addtoend(node)
+        self.dt[key] = node
+        
         if self.cnt > self.capacity:
             del self.dt[self.head.next.key]
             self.remove(self.head.next)
             self.cnt -= 1
 
-        node = Node(key, value)
-        self.addtoend(node)
-        self.dt[key] = node
+        
 
     def remove(self, node):
         pre, nxt = node.pre, node.next
